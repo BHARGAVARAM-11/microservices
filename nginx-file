@@ -1,0 +1,34 @@
+events { worker_connections 1024; }
+
+http {
+    include mime.types;
+    default_type application/json;
+    sendfile on;
+    keepalive_timeout 65;
+
+    upstream user_service { server user-service:8000; }
+    upstream task_service { server task-service:8001; }
+    upstream gateway_service { server gateway-service-container:8002; }
+
+    server {
+        listen 80;
+
+        location /users/ {
+            proxy_pass http://user_service/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+
+        location /tasks/ {
+            proxy_pass http://task_service/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+
+        location /gateway/ {
+            proxy_pass http://gateway_service/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+}

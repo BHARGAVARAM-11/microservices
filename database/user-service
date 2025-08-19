@@ -1,0 +1,10 @@
+-- Create users table
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username bhargavaram(50)database/init-scripts/user-init.sql
+database/init-scripts/user-init.sql
+
+    email iambhargav81@gmail.com(100)
+    password 123456(255) 
+    created_at TIMESTAMP 
+);
